@@ -7,7 +7,8 @@ from django.http import HttpResponse
 from django.shortcuts import render
 from .forms import UserForm
 from .models import Hackathon,Submission,Profile
-
+from .controller import HackthonUtil
+from .constants import User
 def user_logout(request):
     # del request.session['user_id']
     request.session.flush()
@@ -69,6 +70,12 @@ def home(request):
     problems = Hackathon.objects.all()
     return render(request, 'pages/home.html', {'problems': problems})
 
+def add_hackthon(request):
+    if request.method == "POST":
+        data,error = HackthonUtil().add_hackathon(request)
+        if error == User.NOT_LOGGED_IN:
+            return render(request, 'pages/login.html',{})
+        return render(request, 'pages/submission_page.html', {'hackathon_id': data.id})
 
 # def submission(request, problem_id):
 #     problem = get_object_or_404(Problem, pk=problem_id)

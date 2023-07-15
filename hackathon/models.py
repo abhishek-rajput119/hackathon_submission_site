@@ -14,7 +14,7 @@ class Hackathon(models.Model):
     title = models.CharField(max_length=40)
     description = models.TextField(max_length= 200)
     start_time = models.DateTimeField()
-    end_date = models.DateTimeField()
+    end_time = models.DateTimeField()
     active = models.DateTimeField()
     reward = models.PositiveIntegerField()
     created = models.DateTimeField()
