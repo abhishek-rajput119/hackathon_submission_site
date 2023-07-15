@@ -1,3 +1,4 @@
+from django.utils import timezone
 from django.db import models
 from django.contrib.auth.models import User
 
@@ -13,12 +14,12 @@ class Hackathon(models.Model):
     user_id = models.IntegerField()
     title = models.CharField(max_length=40)
     description = models.TextField(max_length= 200)
-    start_time = models.DateTimeField()
-    end_time = models.DateTimeField()
+    start_time = models.DateTimeField(default=timezone.now)
+    end_time = models.DateTimeField(default=timezone.now)
     active = models.DateTimeField()
     reward = models.PositiveIntegerField()
-    created = models.DateTimeField()
-    updated = models.DateTimeField()
+    created = models.DateTimeField(default=timezone.now)
+    updated = models.DateTimeField(default=timezone.now)
 
 class Submission(models.Model):
     IMAGE = 0
