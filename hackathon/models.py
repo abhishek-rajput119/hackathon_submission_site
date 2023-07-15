@@ -31,6 +31,7 @@ class Submission(models.Model):
         (LINK, "link"),
     )
     hackathon_id = models.IntegerField()
+    user_id = models.IntegerField()
     summary = models.TextField()
     type_of_submission = models.PositiveIntegerField(choices=TYPE_OF_SUBMISSION)
 
