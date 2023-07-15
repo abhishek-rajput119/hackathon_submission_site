@@ -6,11 +6,6 @@
   <component name="ChangeListManager">
     <list default="true" id="5d59d7a0-e041-4729-9915-3464ff887ee1" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/db.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/db.sqlite3" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/hackathon/admin.py" beforeDir="false" afterPath="$PROJECT_DIR$/hackathon/admin.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/hackathon/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/hackathon/models.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/hackathon/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/hackathon/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/hackathon_submission_site/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/hackathon_submission_site/urls.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -31,13 +26,13 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;creating-views&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/home/parkplus/Desktop/AI planet/hackathon_submission_site&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "adding-pages",
+    "last_opened_file_path": "/home/parkplus/Desktop/mysite/scalable_online_judge"
   }
-}</component>
+}]]></component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
