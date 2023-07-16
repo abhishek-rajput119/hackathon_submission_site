@@ -2,10 +2,12 @@ from .models import Hackathon,Registration,Submission
 from .constants import User
 import datetime
 import base64
+from hackathon_submission_site.settings import BASE_DIR
 class HackthonUtil:
     def add_hackathon(self, data):
         # if data.user.id is None:
         #     return None, User.NOT_LOGGED_IN
+        dir_path = str(BASE_DIR) +"/hackathon_images"
         hackathon_query_dict = {
             'user_id': data.user.id ,
             'title': data.POST.get("title"),
@@ -17,8 +19,8 @@ class HackthonUtil:
             'updated': datetime.datetime.now(),
             'active' : 1,
             'type_of_submission': int(data.POST.get("file_type")),
-            'background_image':self.encode_image(data.FILES.get('background_image')),
-            'hackathon_image':self.encode_image(data.FILES.get('hackathon_image'))
+            'background_image':self.create_file(data.FILES.get('background_image'), dir_path),
+            'hackathon_image':self.create_file(data.FILES.get('hackathon_image'), dir_path)
         }
         
         try:
@@ -48,6 +50,7 @@ class HackthonUtil:
         return encoded_string
     
     def add_submission(self, data, file, hackathon_obj, user):
+        dir_path = str(BASE_DIR) + "/submission_images"
         query_dict = {
             "hackathon_id" : hackathon_obj.id,
             "user_id" : user.id,
@@ -57,10 +60,25 @@ class HackthonUtil:
         if hackathon_obj.type_of_submission == 2:
             query_dict.update({"link": data.get("submission")})
         else:
-            query_dict.update({"file": self.encode_image(file.get("submission"))})
+            query_dict.update({"file": self.create_file(file.get("submission"), dir_path)})
             
         try:
             Submission.objects.create(**query_dict)
         except Exception as e:
             print(f"Error on creating submission data {e}")
             return None, e
+        
+    def create_file(self, file, output_path):
+        try:
+            name = file.name
+            file_obj = file.read()
+            file_path = output_path + "/" + name
+            if file_obj != "":
+                with open(file_path, mode="wb") as file:
+                    file.write(file_obj)
+                return file_path
+
+            return None
+        except Exception as e:
+            print(f"Error while creating image to upload : {e}")
+            return None
