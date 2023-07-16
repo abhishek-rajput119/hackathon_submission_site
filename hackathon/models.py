@@ -1,3 +1,4 @@
+from django.utils import timezone
 from django.db import models
 from django.contrib.auth.models import User
 
@@ -10,17 +11,6 @@ class Profile(models.Model):
         return self.user.username
 
 class Hackathon(models.Model):
-    user_id = models.IntegerField()
-    title = models.CharField(max_length=40)
-    description = models.TextField(max_length= 200)
-    start_time = models.DateTimeField()
-    end_date = models.DateTimeField()
-    active = models.DateTimeField()
-    reward = models.PositiveIntegerField()
-    created = models.DateTimeField()
-    updated = models.DateTimeField()
-
-class Submission(models.Model):
     IMAGE = 0
     FILE = 1
     LINK = 2
@@ -30,8 +20,28 @@ class Submission(models.Model):
         (FILE, "file"),
         (LINK, "link"),
     )
-    hackathon_id = models.IntegerField()
     user_id = models.IntegerField()
-    summary = models.TextField()
     type_of_submission = models.PositiveIntegerField(choices=TYPE_OF_SUBMISSION)
+    title = models.CharField(max_length=40)
+    description = models.TextField(max_length= 200)
+    start_time = models.DateTimeField()
+    end_time = models.DateTimeField()
+    active = models.BooleanField(default=True)
+    reward = models.PositiveIntegerField()
+    background_image = models.TextField(null=True)
+    hackathon_image = models.TextField(null=True)
+    created = models.DateTimeField()
+    updated = models.DateTimeField()
+    
+class Submission(models.Model):
+    hackathon_id= models.IntegerField()
+    user_id= models.IntegerField()
+    summary= models.TextField()
+    title = models.CharField(max_length=100,null=True)
+    link = models.TextField()
+    file = models.TextField()
+    
 
+class Registration(models.Model):
+    user_id = models.IntegerField()
+    hackathon_id = models.IntegerField()
