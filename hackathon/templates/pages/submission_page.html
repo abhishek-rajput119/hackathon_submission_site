@@ -16,7 +16,7 @@ document.getElementById("inputGroupFile01").type = x;
 <body>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container-fluid">
-            <a class="navbar-brand" href="#">ONLINE JUDGE</a>
+            <a class="navbar-brand" href="#">Hackathon</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarScroll" aria-controls="navbarScroll" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
           </button>
@@ -25,14 +25,17 @@ document.getElementById("inputGroupFile01").type = x;
             <div class="d-flex">
                 <ul class="navbar-nav me-auto my-2 my-lg-0 navbar-nav-scroll" style="--bs-scroll-height: 100px;">
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="/online_judge/home">Home</a>
+                        <a class="nav-link active" aria-current="page" href="home">Home</a>
                     </li>
                     
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="profile">abhisaole</a>
+                        <a class="nav-link active" aria-current="page" href="profile">nikhil</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="/online_judge/logout">Logout</a>
+                        <a class="nav-link active" aria-current="page" href="logout">Logout</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="hackathon">create hackathon</a>
                     </li>
                     
                 </ul>
@@ -45,24 +48,30 @@ document.getElementById("inputGroupFile01").type = x;
             <div class="col-12">
                 <div class="container-fluid bg-light ">
                     <h3 class="text-center mb-4 opacity-h ">Submission</h3>
-                    <div class="row ">
+                    
+                    <div class="form-outline my-4">
+                        <form role="form" enctype="multipart/form-data" method="post">
+                            <input type="hidden" name="csrfmiddlewaretoken" value="KkcmyLlwknm7LVoVnSU8yEHocaio539lZm5hcX4Qz58ichzPtDr15QECftUum23C"><div class="row ">
                         <div class="col-lg-7">
-                            <select class="p-2" name="language " id="id_language" onchange="myFunction()">
-                              <option value="file" selected="">Image</option>
-
-                              <option value="link">Link</option>
- 
-                              <option value="file">File</option>
-                                </select><input class="p-2" type="link" id="inputGroupFile01" aria-describedby="inputGroupFileAddon01">
-    
+                             <label>Title</label>
+                            <input type="text" name="title" class="form-control " rows="15">
+                            
                             
                         </div>
                     </div>
-                    <div class="form-outline my-4">
-                        <form role="form" enctype="multipart/form-data" method="post">
-                            <input type="hidden" name="csrfmiddlewaretoken" value="KkcmyLlwknm7LVoVnSU8yEHocaio539lZm5hcX4Qz58ichzPtDr15QECftUum23C">
+    
     <label>Description:</label>
-                            <textarea name="code" class="form-control " rows="15"></textarea>
+                            <textarea name="summary" class="form-control " rows="15"></textarea>
+                            {% if file_type == 0 %}
+                            <label for="formFileLg"  class="form-label">Image Upload</label>
+                            <input class="form-control form-control-lg" name="submission" id="formFileLg" type="file">
+                            {%elif file_type == 1%}
+                            <label for="formFileLg" class="form-label">File Upload</label>
+                            <input class="form-control form-control-lg" name="submission" id="formFileLg" type="file">
+                            {% else %}
+                            <label for="formFileLg" class="form-label">Link</label>
+                            <input class="form-control form-control-lg" name="submission" id="formFileLg" type="text">
+                            {% endif %}
                             <button class="btn btn-success btn-md my-2" type="submit">Add Submission</button>
                         </form>
                     </div>
@@ -77,32 +86,5 @@ document.getElementById("inputGroupFile01").type = x;
 
 <script>
 
-</script><div id="volume-booster-visusalizer">
-                    <div class="sound">
-                        <div class="sound-icon"></div>
-                        <div class="sound-wave sound-wave_one"></div>
-                        <div class="sound-wave sound-wave_two"></div>
-                        <div class="sound-wave sound-wave_three"></div>
-                    </div>
-                    <div class="segments-box">
-                        <div data-range="1-20" class="segment"><span></span></div>
-                        <div data-range="21-40" class="segment"><span></span></div>
-                        <div data-range="41-60" class="segment"><span></span></div>
-                        <div data-range="61-80" class="segment"><span></span></div>
-                        <div data-range="81-100" class="segment"><span></span></div>
-                    </div>
-                </div><div id="volume-booster-visusalizer">
-                    <div class="sound">
-                        <div class="sound-icon"></div>
-                        <div class="sound-wave sound-wave_one"></div>
-                        <div class="sound-wave sound-wave_two"></div>
-                        <div class="sound-wave sound-wave_three"></div>
-                    </div>
-                    <div class="segments-box">
-                        <div data-range="1-20" class="segment"><span></span></div>
-                        <div data-range="21-40" class="segment"><span></span></div>
-                        <div data-range="41-60" class="segment"><span></span></div>
-                        <div data-range="61-80" class="segment"><span></span></div>
-                        <div data-range="81-100" class="segment"><span></span></div>
-                    </div>
-                </div></body></html>
+</script>
+    </body></html>

@@ -28,13 +28,13 @@
                     </li>
                     {% if user.is_authenticated %}
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="/profile">{{ user.username }}</a>
+                        <a class="nav-link active" aria-current="page" href="profile">{{ user.username }}</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="logout">Logout</a>
+                        <a class="nav-link active" aria-current="page" href="/logout">Logout</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="hackathon">create hackathon</a>
+                        <a class="nav-link active" aria-current="page" href="/register_for_hackthon/show_submissions/make_submission/{{hackathon_id}}">Add Submission</a>
                     </li>
                     {% else %}
                     <li class="nav-item">
@@ -50,36 +50,19 @@
     </nav>
     <div class="row mt-2">
         
-        <div class="col-12">
+        <div class="col-12" style="height:500px;overflow: scroll;">
             {% for problem in problems %}
             <div class=" row border-bottom border-3 mx-2">
-                <div class=" col-2">
-                    <img className="dogcImg" src='data:image/png;base64,{{problem.file}}' alt="" />
-                </div>
-                <div class=" col-6">
+                <div class=" col-8 ">
                     <h5 class="h5 text-muted my-2 ">{{ problem.title }}</h5>
-                    <p class="text-muted ">Description : {{ problem.description }}</p>
-                    <p class=" text-muted " style="display: inline; ">Submission Type: {{ problem.type_of_submission }}</p>
-                    <p class=" text-muted " style="display: inline; ">Reward: {{ problem.reward }}</p>
-
+                    <p class="text-muted ">Summary : {{ problem.summary }}</p>
                 </div>
                 <div class=" col-4 ">
-                    <div class="d-grid gap-2 my-2 mx-2 ">
-                        {% if problem.id in registered_hackathon%}
-                            <button class="btn btn-primary" type="button "><b><a id="solve" href="/register_for_hackthon/show_submissions/{{problem.id}}">View submission</a></b></button>
-                        {% else %}
-                            <button class="btn btn-success " type="button "><b><a id="solve" href="/register_for_hackthon/{{problem.id}}">Register</a></b></button>
-                        {% endif %}
-                    </div>
-                    <div>
-                        <div class="row ">
-                            <div class="col-10" style="text-align: center; ">
-                                <p class=" text-muted " style="">Start_time: {{ problem.start_time }}</p>
-                                <p class=" text-muted " style="display: inline; ">End time: {{ problem.end_time }}</p>
-
-                            </div>
-                        </div>
-                    </div>
+                    {%if problem.type_of_submission == 2%}
+                        <p>Link : {{problem.link}} </p>   
+                    {% else %}
+                        <img className="dogcImg" src='data:image/png;base64,{{problem.file}}' alt="" />   
+                    {% endif %}
                 </div>
             </div>
             {% endfor %}

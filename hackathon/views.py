@@ -6,7 +6,7 @@ from django.contrib.auth import login, authenticate, logout
 from django.http import HttpResponse
 from django.shortcuts import render
 from .forms import UserForm
-from .models import Hackathon,Submission,Profile
+from .models import Hackathon,Profile,Registration, Submission
 from .controller import HackthonUtil
 from .constants import User
 def user_logout(request):
@@ -68,106 +68,38 @@ def signup(request):
 
 def home(request):
     problems = Hackathon.objects.all()
-    return render(request, 'pages/home.html', {'problems': problems})
+    registered_hackathon = Registration.objects.filter(user_id=request.user.id).values_list('hackathon_id')
+    registered_hackathon_id_list = [entry[0] for entry in registered_hackathon]
+    return render(request, 'pages/home.html', {'problems': problems, 'registered_hackathon':registered_hackathon_id_list})
 
 def add_hackthon(request, id = None):
     if request.method == "POST":
         data,error = HackthonUtil().add_hackathon(request)
         if error == User.NOT_LOGGED_IN:
-            return render(request, 'pages/login.html',{})
-        return render(request, 'pages/submission_page.html', {'hackathon_id': data.id})
+            return render(request, 'pages/login.html',{"message": "User not logged in"})
+        return render(request, 'pages/home.html', {'hackathon_id': data.id})
     return render(request, 'pages/register_hackathon.html', {})
 
-# def submission(request, problem_id):
-#     problem = get_object_or_404(Problem, pk=problem_id)
-#     compiled = False
-#     code_text = ""
-#     if request.method == "POST":
-#         verdict = False
-#         compiled = True
-#         user = request.user
-#         code_text = request.POST['code']
-#
-#         f = open(f"codes/{user.id}_{problem_id}.cpp", "w")
-#         f.write(code_text)
-#         f.close()
-#
-#         f = open(f"codes/inputs/{problem_id}.txt", 'r')
-#         input_text = f.read()
-#         f.close()
-#
-#         coded_input_text = []
-#         with open(f"codes/inputs/{problem_id}.txt") as f:
-#             coded_input_text = [x.rstrip() for x in f]
-#
-#         print(coded_input_text)
-#         f = open(f"codes/outputs/{problem_id}.txt", "r")
-#         expected_output = f.read().strip()
-#
-#         # subprocess.run(['docker', 'ps'])
-#         subprocess.run(['docker', 'cp', f'codes/{user.id}_{problem_id}.cpp', '764361bc5ec4:/a.cpp'], shell=True,
-#                        capture_output=True)
-#         output = subprocess.run(['docker', 'exec', '764361bc5ec4', 'g++', 'a.cpp'], shell=True,
-#                                 capture_output=True, text=True)
-#
-#         if os.path.exists(f"codes/{user.id}_{problem_id}.cpp"):
-#             os.remove(f"codes/{user.id}_{problem_id}.cpp")
-#         else:
-#             print("The file does not exist")
-#
-#         print(output.stderr)
-#
-#         if output.returncode == 0:
-#             out = subprocess.run(['docker', 'exec', '-i', '764361bc5ec4', './a.out'], shell=True, capture_output=True,
-#                                  text=True, input=input_text)
-#             print(out)
-#             subprocess.run(['docker', 'exec', '764361bc5ec4', 'rm', '-rf', 'a.out'], shell=True)
-#             subprocess.run(['docker', 'exec', '764361bc5ec4', 'rm', '-rf', 'a.cpp'], shell=True)
-#
-#             with open(f"codes/outputs/{user.id}_{problem_id}.txt", "w") as f:
-#                 f.write(out.stdout)
-#
-#             with open(f"codes/outputs/{user.id}_{problem_id}.txt", "r") as f:
-#                 your_output = f.read().strip()
-#
-#             if os.path.exists(f"codes/outputs/{user.id}_{problem_id}.txt"):
-#                 os.remove(f"codes/outputs/{user.id}_{problem_id}.txt")
-#             else:
-#                 print("The file does not exist")
-#
-#
-#
-#             print(input_text)
-#             print(expected_output)
-#             print(your_output)
-#
-#             if len(your_output) != len(expected_output):
-#                 print("length are not equal")
-#             else:
-#                 for i in range(len(your_output)):
-#                     if your_output[i] != expected_output[i]:
-#                         print("Character mismatch")
-#
-#             verdict = (your_output == expected_output)
-#             print(verdict)
-#
-#             return render(request, 'pages/submission.html', {'problem': problem,
-#                                                              'compiled': compiled,
-#                                                              'input_text': coded_input_text,
-#                                                              'return_code': output.returncode,
-#                                                              'expected_output': expected_output,
-#                                                              'your_output': your_output,
-#                                                              'verdict': verdict,
-#                                                              'code_text': code_text
-#                                                              })
-#         return render(request, 'pages/submission.html', {'problem': problem,
-#                                                          'compiled': compiled,
-#                                                          'input_text': coded_input_text,
-#                                                          'return_code': output.returncode,
-#                                                          'expected_output': expected_output,
-#                                                          'error_message': output.stderr,
-#                                                          'code_text': code_text
-#                                                          })
-#
-#     return render(request, 'pages/submission.html', {'problem': problem, 'compiled': compiled,
-#                                                      'code_text': code_text})
+def register_for_hackathon(request, id=None):
+    response, error = HackthonUtil().register_for_hackathon(id, request.user)   
+    problems = Hackathon.objects.all()
+    if error: 
+        return render(request, 'pages/home.html', {'problems': problems})
+    registered_hackathon = Registration.objects.filter(user_id=request.user.id).values_list('hackathon_id')
+    registered_hackathon_id_list = [entry[0] for entry in registered_hackathon]
+    return render(request, 'pages/home.html', {'problems': problems, 'registered_hackathon':registered_hackathon_id_list})
+
+def make_submissions(request, hackathon_id = None):
+    hackathon_object = Hackathon.objects.filter(id=hackathon_id)
+    type_of_submission = hackathon_object.values()[0].get("type_of_submission")
+    if request.method == "POST":
+        HackthonUtil().add_submission(request.POST,request.FILES,hackathon_object[0], request.user)
+        submissions = Submission.objects.filter(user_id = request.user.id, hackathon_id = hackathon_id)
+        return render(request,'pages/show_submissions.html', {'problems': submissions, "hackathon_id":hackathon_id})
+    return render(request,'pages/submission_page.html', {"file_type": type_of_submission})
+
+def show_submissions(request, hackathon_id = None):
+    submissions = Submission.objects.filter(user_id = request.user.id, hackathon_id = hackathon_id)
+    for submission in submissions:
+        submission.file = submission.file[2:-1]
+    return render(request, "pages/show_submissions.html", {'problems': submissions, "hackathon_id":hackathon_id})
