@@ -14,12 +14,12 @@ class Hackathon(models.Model):
     user_id = models.IntegerField()
     title = models.CharField(max_length=40)
     description = models.TextField(max_length= 200)
-    start_time = models.DateTimeField(default=timezone.now)
-    end_time = models.DateTimeField(default=timezone.now)
-    active = models.DateTimeField()
+    start_time = models.DateTimeField(  )
+    end_time = models.DateTimeField()
+    active = models.BooleanField(default=True)
     reward = models.PositiveIntegerField()
-    created = models.DateTimeField(default=timezone.now)
-    updated = models.DateTimeField(default=timezone.now)
+    created = models.DateTimeField()
+    updated = models.DateTimeField()
 
 class Submission(models.Model):
     IMAGE = 0

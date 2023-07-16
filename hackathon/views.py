@@ -6,7 +6,7 @@ from django.contrib.auth import login, authenticate, logout
 from django.http import HttpResponse
 from django.shortcuts import render
 from .forms import UserForm
-# from .models import Hackathon,Submission,Profile
+from .models import Hackathon,Submission,Profile
 from .controller import HackthonUtil
 from .constants import User
 def user_logout(request):

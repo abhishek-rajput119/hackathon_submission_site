@@ -9,8 +9,9 @@ class HackthonUtil:
             'user_id': data.user.id ,
             'title': data.POST.get("title"),
             'description': data.POST.get("description"),
-            'start_time': data.POST.get("start_date"),
-            'end_time' : data.POST.get("end_date"),
+            'reward': int(data.POST.get("reward")),
+            'start_time': data.POST.get("start_time"),
+            'end_time' : data.POST.get("end_time"),
             'created': datetime.datetime.now(),
             'updated': datetime.datetime.now(),
             'active' : 1,
@@ -23,3 +24,4 @@ class HackthonUtil:
             return None, 0
         
         return hackathon, None
+    
