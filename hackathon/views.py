@@ -77,7 +77,7 @@ def add_hackthon(request, id = None):
         data,error = HackthonUtil().add_hackathon(request)
         if error == User.NOT_LOGGED_IN:
             return render(request, 'pages/login.html',{"message": "User not logged in"})
-        return render(request, 'pages/home.html', {'hackathon_id': data.id})
+        return home(request)
     return render(request, 'pages/register_hackathon.html', {})
 
 def register_for_hackathon(request, id=None):
@@ -95,11 +95,11 @@ def make_submissions(request, hackathon_id = None):
     if request.method == "POST":
         HackthonUtil().add_submission(request.POST,request.FILES,hackathon_object[0], request.user)
         submissions = Submission.objects.filter(user_id = request.user.id, hackathon_id = hackathon_id)
-        return render(request,'pages/show_submissions.html', {'problems': submissions, "hackathon_id":hackathon_id})
+        return render(request,'pages/show_submissions.html', {'problems': submissions, "hackathon_id":hackathon_id, "file_type": type_of_submission})
     return render(request,'pages/submission_page.html', {"file_type": type_of_submission})
 
 def show_submissions(request, hackathon_id = None):
     submissions = Submission.objects.filter(user_id = request.user.id, hackathon_id = hackathon_id)
-    for submission in submissions:
-        submission.file = submission.file[2:-1]
-    return render(request, "pages/show_submissions.html", {'problems': submissions, "hackathon_id":hackathon_id})
+    hackathon_object = Hackathon.objects.filter(id=hackathon_id)
+    type_of_submission = hackathon_object.values()[0].get("type_of_submission")
+    return render(request, "pages/show_submissions.html", {'problems': submissions, "hackathon_id":hackathon_id, "file_type": type_of_submission})

@@ -58,10 +58,12 @@
                     <p class="text-muted ">Summary : {{ problem.summary }}</p>
                 </div>
                 <div class=" col-4 ">
-                    {%if problem.type_of_submission == 2%}
-                        <p>Link : {{problem.link}} </p>   
+                    {%if file_type == 2%}
+                        <p>Link : {{problems.link}} </p>   
+                    {% elif file_type == 0 %}
+                        <img className="dogcImg" src={{problems.file}} alt="" />  
                     {% else %}
-                        <img className="dogcImg" src='data:image/png;base64,{{problem.file}}' alt="" />   
+                        <file src={{problems.file}} alt="">
                     {% endif %}
                 </div>
             </div>
