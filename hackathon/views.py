@@ -93,7 +93,7 @@ def make_submissions(request, hackathon_id = None):
     hackathon_object = Hackathon.objects.filter(id=hackathon_id)
     type_of_submission = hackathon_object.values()[0].get("type_of_submission")
     if request.method == "POST":
-        HackthonUtil().add_submission(request.POST,request.FILES,hackathon_object[0], request.user)
+        res, error = HackthonUtil().add_submission(request.POST,request.FILES,hackathon_object[0], request.user)
         submissions = Submission.objects.filter(user_id = request.user.id, hackathon_id = hackathon_id)
         return render(request,'pages/show_submissions.html', {'problems': submissions, "hackathon_id":hackathon_id, "file_type": type_of_submission})
     return render(request,'pages/submission_page.html', {"file_type": type_of_submission})
