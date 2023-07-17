@@ -1,3 +1,4 @@
+import os
 from .models import Hackathon,Registration,Submission
 from .constants import User
 import datetime
@@ -57,16 +58,22 @@ class HackthonUtil:
             "title" : data.get("title"),
             "summary" : data.get("summary"),
         }
+        if hackathon_obj.type_of_submission == 2 and not isinstance(str, data.get("submission")):
+            return None, "File type do not match with Hackathon type"
+        elif not self.check_file_type(file.get("submission"), hackathon_obj.type_of_submission):
+            return None ,  "File type do not match with Hackathon type"
+            
         if hackathon_obj.type_of_submission == 2:
             query_dict.update({"link": data.get("submission")})
         else:
             query_dict.update({"file": self.create_file(file.get("submission"), dir_path)})
             
         try:
-            Submission.objects.create(**query_dict)
+            submission = Submission.objects.create(**query_dict)
         except Exception as e:
             print(f"Error on creating submission data {e}")
             return None, e
+        return submission, None
         
     def create_file(self, file, output_path):
         try:
@@ -82,3 +89,12 @@ class HackthonUtil:
         except Exception as e:
             print(f"Error while creating image to upload : {e}")
             return None
+
+    def check_file_type(self, file, file_type):
+        file_name  = file.name
+        extension  = os.path.splitext(file_name)[1]
+        if file_type == 0  and extension not in ['.jpeg','.jpg','.png']:
+            return False
+        if file_type == 1 and extension not in ['.txt', '.pdf']:
+            return False
+        return True

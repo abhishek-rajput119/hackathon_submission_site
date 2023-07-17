@@ -54,7 +54,7 @@
             {% for problem in problems %}
             <div class=" row border-bottom border-3 mx-2">
                 <div class=" col-2">
-                    <img className="dogcImg" src='data:image/png;base64,{{problem.file}}' alt="" />
+                    <img className="dogcImg" src={{problem.hackathon_image}} alt="" />
                 </div>
                 <div class=" col-6">
                     <h5 class="h5 text-muted my-2 ">{{ problem.title }}</h5>
