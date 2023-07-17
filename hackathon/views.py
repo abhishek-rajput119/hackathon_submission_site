@@ -73,6 +73,8 @@ def home(request):
     return render(request, 'pages/home.html', {'problems': problems, 'registered_hackathon':registered_hackathon_id_list})
 
 def add_hackthon(request, id = None):
+    if request.user.id is None:
+        return user_login(request)
     if request.method == "POST":
         data,error = HackthonUtil().add_hackathon(request)
         if error == User.NOT_LOGGED_IN:
@@ -81,6 +83,8 @@ def add_hackthon(request, id = None):
     return render(request, 'pages/register_hackathon.html', {})
 
 def register_for_hackathon(request, id=None):
+    if request.user.id is None:
+        return user_login(request)
     response, error = HackthonUtil().register_for_hackathon(id, request.user)   
     problems = Hackathon.objects.all()
     if error: 
@@ -90,16 +94,24 @@ def register_for_hackathon(request, id=None):
     return render(request, 'pages/home.html', {'problems': problems, 'registered_hackathon':registered_hackathon_id_list})
 
 def make_submissions(request, hackathon_id = None):
+    if request.user.id is None:
+        return user_login(request)
     hackathon_object = Hackathon.objects.filter(id=hackathon_id)
     type_of_submission = hackathon_object.values()[0].get("type_of_submission")
     if request.method == "POST":
         res, error = HackthonUtil().add_submission(request.POST,request.FILES,hackathon_object[0], request.user)
+        if error:
+            return HttpResponse("Invalid File type")
         submissions = Submission.objects.filter(user_id = request.user.id, hackathon_id = hackathon_id)
         return render(request,'pages/show_submissions.html', {'problems': submissions, "hackathon_id":hackathon_id, "file_type": type_of_submission})
     return render(request,'pages/submission_page.html', {"file_type": type_of_submission})
 
 def show_submissions(request, hackathon_id = None):
+    if request.user.id is None:
+        return user_login(request)
     submissions = Submission.objects.filter(user_id = request.user.id, hackathon_id = hackathon_id)
     hackathon_object = Hackathon.objects.filter(id=hackathon_id)
-    type_of_submission = hackathon_object.values()[0].get("type_of_submission")
+    type_of_submission = None
+    if hackathon_object:
+        type_of_submission = hackathon_object.values()[0].get("type_of_submission")
     return render(request, "pages/show_submissions.html", {'problems': submissions, "hackathon_id":hackathon_id, "file_type": type_of_submission})

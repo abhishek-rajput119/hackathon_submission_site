@@ -6,8 +6,8 @@ import base64
 from hackathon_submission_site.settings import BASE_DIR
 class HackthonUtil:
     def add_hackathon(self, data):
-        # if data.user.id is None:
-        #     return None, User.NOT_LOGGED_IN
+        if data.user.id is None:
+            return None, User.NOT_LOGGED_IN
         dir_path = str(BASE_DIR) +"/hackathon_images"
         hackathon_query_dict = {
             'user_id': data.user.id ,
@@ -58,9 +58,9 @@ class HackthonUtil:
             "title" : data.get("title"),
             "summary" : data.get("summary"),
         }
-        if hackathon_obj.type_of_submission == 2 and not isinstance(str, data.get("submission")):
+        if hackathon_obj.type_of_submission == 2 and not data.get("submission"):
             return None, "File type do not match with Hackathon type"
-        elif not self.check_file_type(file.get("submission"), hackathon_obj.type_of_submission):
+        if hackathon_obj.type_of_submission != 2 and not self.check_file_type(file.get("submission"), hackathon_obj.type_of_submission):
             return None ,  "File type do not match with Hackathon type"
             
         if hackathon_obj.type_of_submission == 2:
